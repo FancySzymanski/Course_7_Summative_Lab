@@ -37,3 +37,17 @@ class Project:
         completed = sum(1 for task in self.tasks if task.completed)
 
         return f"{self.title} -{description}{due}\n[{completed}/{total}] Tasks completed"
+
+    def to_dict(self):
+        return {
+        "title": self.title,
+        "description": self.description,
+        "due_date": self.due_date,
+        "tasks": [task.to_dict() for task in self.tasks]
+        }   
+
+    @classmethod
+    def from_dict(cls, data):
+        project = cls(data["title"], data.get("description", ""), data.get("due_date"))
+        project.tasks = [Task.from_dict(t) for t in data["tasks"]]
+        return project

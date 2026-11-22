@@ -19,3 +19,19 @@ class Task:
         box = "x" if self.completed else " "
         who = f" ({self.assigned_to})" if self.assigned_to else ""
         return f"[{box}] {self.id}: {self.title}{who}"
+
+    def to_dict(self):
+        return {
+        "id": self.id,
+        "title": self.title,
+        "assigned_to": self.assigned_to,
+        "completed": self.completed,
+        }   
+
+    @classmethod
+    def from_dict(cls, data):
+        task = cls(data["title"], data.get("assigned_to"))
+        task.id = data["id"]                    # replace the fresh ID with the saved one
+        task.completed = data["completed"]      # replace the default False with the saved value
+        Task._next_id = max(Task._next_id, task.id + 1)
+        return task

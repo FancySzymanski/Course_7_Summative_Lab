@@ -40,3 +40,16 @@ class User(Person):
     def __str__(self):
         count = len(self.projects)
         return f"{super().__str__()}\nTotal projects: {count}"
+
+    def to_dict(self):
+        return {
+        "name": self.name,
+        "email": self.email,
+        "projects": [project.to_dict() for project in self.projects]
+        }   
+
+    @classmethod
+    def from_dict(cls, data):
+        user = cls(data["name"], data["email"])
+        user.projects = [Project.from_dict(p) for p in data["projects"]]
+        return user
