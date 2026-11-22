@@ -1,10 +1,25 @@
 # Course_7_Summative_Lab
 # Project Tracker CLI
 
-## Problem
+## Summary
 A command-line tool for a development team. Admins manage users, projects,
 and tasks through CLI commands, data is saved to a local file, and an AI
 client can generate a summary of a project.
+
+## Setup
+    pipenv install
+    pipenv shell
+
+## Usage
+    python main.py add-user --name "Alex" --email "alex@example.com"
+    python main.py add-project --user "Alex" --title "CLI Tool" --description "Build tracker" --due-date 2026-12-01
+    python main.py add-task --project "CLI Tool" --title "Write models" --assigned-to Alex
+    python main.py complete-task --project "CLI Tool" --task "Write models"
+    python main.py list-projects --user "Alex"
+    python main.py summarize-project --project "CLI Tool"
+
+`summarize-project` uses a local Ollama model (`ollama pull llama3.2`).
+If Ollama isn't running, the command prints a clear error instead of crashing.
 
 ## Entities and relationships
 - **User**: `name`, `email`. A user has many projects (one-to-many).
@@ -28,6 +43,7 @@ client can generate a summary of a project.
 - `models/`: `user.py`, `project.py`, `task.py`
 - `services/storage_service.py`: JSON save/load
 - `services/ai_client.py`: reusable AI client
+- `services/project_summary.py`: builds the project summary prompt and calls the AI client
 - `utils/formatters.py`: output formatting
 - `data/project_data.json`: persisted data
 - `requirements.txt` and `Pipfile`: dependencies (ollama)
